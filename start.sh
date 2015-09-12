@@ -15,8 +15,10 @@ elif [[ "$COMMAND" == 'dump-cron' ]]; then
     if [ -n "$PGPASSWORD" ]; then
         CRON_ENV="$CRON_ENV\nPGPASSWORD=$PGPASSWORD"
     fi
+    echo -e "$CRON_ENV\n$CRON_SCHEDULE /dump.sh >> /var/log/cron.log 2>&1"
     echo -e "$CRON_ENV\n$CRON_SCHEDULE /dump.sh >> /var/log/cron.log 2>&1" | crontab -
-    exec cron -f
+    cron
+    tail -f /var/log/cron.log
 else
     echo "Unknown command $COMMAND"
     echo "Available commands: dump, dump-cron"
