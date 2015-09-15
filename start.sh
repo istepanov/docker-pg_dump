@@ -10,15 +10,18 @@ PGUSER=${PGUSER:-postgres}
 if [[ "$COMMAND" == 'dump' ]]; then
     exec /dump.sh
 elif [[ "$COMMAND" == 'dump-cron' ]]; then
-    touch /var/log/cron.log
+    LOGFIFO='/var/log/cron.fifo'
+    if [[ ! -e "$LOGFIFO" ]]; then
+        mkfifo "$LOGFIFO"
+    fi
     CRON_ENV="PREFIX=$PREFIX\nPGUSER=$PGUSER"
     if [ -n "$PGPASSWORD" ]; then
         CRON_ENV="$CRON_ENV\nPGPASSWORD=$PGPASSWORD"
     fi
-    echo -e "$CRON_ENV\n$CRON_SCHEDULE /dump.sh >> /var/log/cron.log 2>&1"
-    echo -e "$CRON_ENV\n$CRON_SCHEDULE /dump.sh >> /var/log/cron.log 2>&1" | crontab -
+    echo -e "$CRON_ENV\n$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1"
+    echo -e "$CRON_ENV\n$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1" | crontab -
     cron
-    tail -f /var/log/cron.log
+    tail -f "$LOGFIFO"
 else
     echo "Unknown command $COMMAND"
     echo "Available commands: dump, dump-cron"
