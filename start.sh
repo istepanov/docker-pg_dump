@@ -18,8 +18,8 @@ elif [[ "$COMMAND" == 'dump-cron' ]]; then
     if [ -n "$PGPASSWORD" ]; then
         CRON_ENV="$CRON_ENV\nPGPASSWORD=$PGPASSWORD"
     fi
-    echo -e "$CRON_ENV\n$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1"
     echo -e "$CRON_ENV\n$CRON_SCHEDULE /dump.sh > $LOGFIFO 2>&1" | crontab -
+    crontab -l
     cron
     tail -f "$LOGFIFO"
 else
