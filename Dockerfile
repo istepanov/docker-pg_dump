@@ -1,4 +1,4 @@
-FROM postgres:9.4
+FROM postgres:latest
 MAINTAINER Ilya Stepanov <dev@ilyastepanov.com>
 
 RUN apt-get update && \
