@@ -1,5 +1,5 @@
 FROM postgres:latest
-MAINTAINER Ilya Stepanov <dev@ilyastepanov.com>
+MAINTAINER Cristoffer Fairweather <cfairweather@annixa.com> # Previously Ilya Stepanov <dev@ilyastepanov.com>
 
 RUN apt-get update && \
     apt-get install -y cron && \
