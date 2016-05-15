@@ -13,7 +13,7 @@ Attach a target postgres container to this container and mount a volume to conta
 | `PGUSER` | Required | postgres | The user for accessing the database at `db` |
 | `PGPASSWORD` | Optional | `None` | The password for accessing the database at `db` |
 | `CRON_SCHEDULE` | Required | 0 1 * * * | The cron schedule at which to run the pg_dump |
-| `DELETE_OLDER_THAN` | Optional | `None` | Optionally, delete files older than `DELETE_OLDER_THAN`. See [`man find`'s comments for -atime](http://www.freebsd.org/cgi/man.cgi?find(1)) for the correct formats. Do not include `+` or `-`. |
+| `DELETE_OLDER_THAN` | Optional | `None` | Optionally, delete files older than `DELETE_OLDER_THAN` minutes. Do not include `+` or `-`. |
 
 Example:
 ```
@@ -26,7 +26,7 @@ postgres-backup:
     - PGUSER=postgres
     - PGPASSWORD=SumPassw0rdHere
     - CRON_SCHEDULE=* * * * * #Every minute
-    - DELETE_OLDER_THAN=1d #Optionally delete files older than $DELETE_OLDER_THAN.
+    - DELETE_OLDER_THAN=1 #Optionally delete files older than $DELETE_OLDER_THAN minutes.
   volumes:
     - /dump
   command: dump-cron
