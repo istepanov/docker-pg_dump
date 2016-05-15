@@ -10,4 +10,11 @@ FILE="/dump/$PREFIX-$DATE.sql"
 pg_dump -h db -U "$PGUSER" -f "$FILE"
 gzip "$FILE"
 
+if [ ! -z "$DELETE_OLDER_THAN" ]; then
+	echo "Deleting old backups: $DELETE_OLDER_THAN"
+	find /dump/* -mtime "+$DELETE_OLDER_THAN" -exec rm {} \;
+fi
+
+
+
 echo "Job finished: $(date)"
