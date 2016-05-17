@@ -6,6 +6,9 @@ COMMAND=${1:-dump}
 CRON_SCHEDULE=${CRON_SCHEDULE:-0 1 * * *}
 PREFIX=${PREFIX:-dump}
 PGUSER=${PGUSER:-postgres}
+PGDB=${PGDB:-postgres}
+PGHOST=${PGHOST:-db}
+
 
 if [[ "$COMMAND" == 'dump' ]]; then
     exec /dump.sh
@@ -14,7 +17,7 @@ elif [[ "$COMMAND" == 'dump-cron' ]]; then
     if [[ ! -e "$LOGFIFO" ]]; then
         mkfifo "$LOGFIFO"
     fi
-    CRON_ENV="PREFIX='$PREFIX'\nPGUSER='$PGUSER'"
+    CRON_ENV="PREFIX='$PREFIX'\nPGUSER='$PGUSER'\nPGDB='$PGDB'\nPGHOST='$PGHOST'"
     if [ -n "$PGPASSWORD" ]; then
         CRON_ENV="$CRON_ENV\nPGPASSWORD='$PGPASSWORD'"
     fi
