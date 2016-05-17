@@ -10,8 +10,10 @@ Attach a target postgres container to this container and mount a volume to conta
 ## Environment Variables:
 | Variable | Required? | Default | Description |
 | -------- |:--------- |:------- |:----------- |
-| `PGUSER` | Required | postgres | The user for accessing the database at `db` |
-| `PGPASSWORD` | Optional | `None` | The password for accessing the database at `db` |
+| `PGUSER` | Required | postgres | The user for accessing the database |
+| `PGPASSWORD` | Optional | `None` | The password for accessing the database |
+| `PGDB` | Optional | postgres | The name of the database |
+| `PGHOST` | Optional | db | The hostname of the database |
 | `CRON_SCHEDULE` | Required | 0 1 * * * | The cron schedule at which to run the pg_dump |
 | `DELETE_OLDER_THAN` | Optional | `None` | Optionally, delete files older than `DELETE_OLDER_THAN` minutes. Do not include `+` or `-`. |
 
@@ -27,6 +29,8 @@ postgres-backup:
     - PGPASSWORD=SumPassw0rdHere
     - CRON_SCHEDULE=* * * * * #Every minute
     - DELETE_OLDER_THAN=1 #Optionally delete files older than $DELETE_OLDER_THAN minutes.
+  #  - PGDB=postgres # The name of the database to dump
+  #  - PGHOST=db # The hostname of the PostgreSQL database to dump
   volumes:
     - /dump
   command: dump-cron
